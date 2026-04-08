@@ -1,6 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import * as THREE from 'three'
+
+gsap.registerPlugin(ScrollTrigger)
 
 /* ─── Three.js warm-tone drifting particles ─── */
 function initParticles(canvas) {
@@ -92,12 +95,37 @@ function initParticles(canvas) {
 export default function Hero() {
   const canvasRef = useRef(null)
   const heroRef = useRef(null)
+  const [navLight, setNavLight] = useState(false)
 
   /* Three.js background */
   useEffect(() => {
     if (!canvasRef.current) return
     const cleanup = initParticles(canvasRef.current)
     return cleanup
+  }, [])
+
+  /* Nav color switch on dark sections */
+  useEffect(() => {
+    const artistsEl = document.getElementById('artists')
+    if (!artistsEl) return
+
+    const trigger = ScrollTrigger.create({
+      trigger: artistsEl,
+      start: 'top top',
+      end: () => {
+        // Match the Artists pin ScrollTrigger's full scroll distance
+        const pinTrigger = ScrollTrigger.getAll().find(
+          (t) => t.trigger === artistsEl && t.pin
+        )
+        return pinTrigger ? `+=${pinTrigger.end - pinTrigger.start}` : 'bottom top'
+      },
+      onEnter: () => setNavLight(true),
+      onLeave: () => setNavLight(false),
+      onEnterBack: () => setNavLight(true),
+      onLeaveBack: () => setNavLight(false),
+    })
+
+    return () => trigger.kill()
   }, [])
 
   /* GSAP entrance animations */
@@ -156,14 +184,26 @@ export default function Hero() {
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 md:px-12"
       >
         <a href="/" className="block">
-          <img src="/logo.svg" alt="Ascaso Gallery" style={{height: '44px'}} />
+          <img
+            src="/logo.svg"
+            alt="Ascaso Gallery"
+            style={{
+              height: '44px',
+              filter: navLight ? 'brightness(0) invert(1)' : 'none',
+              transition: 'filter 0.3s ease',
+            }}
+          />
         </a>
         <ul className="hidden md:flex items-center gap-10">
           {['Artists', 'Exhibitions', 'Contact'].map((link) => (
             <li key={link}>
               <a
                 href={`#${link.toLowerCase()}`}
-                className="font-body text-sm tracking-[0.12em] uppercase text-ink/70 hover:text-gold transition-colors duration-500"
+                className="font-body text-sm tracking-[0.12em] uppercase hover:text-gold"
+                style={{
+                  color: navLight ? '#FAF9F6' : 'rgba(13,13,13,0.7)',
+                  transition: 'color 0.3s ease',
+                }}
               >
                 {link}
               </a>
