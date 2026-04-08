@@ -33,12 +33,12 @@ export default function News() {
       gsap.from('[data-animate="news-card"]', {
         y: 50,
         opacity: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        stagger: 0.2,
+        stagger: 0.15,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 70%',
+          start: 'top 75%',
+          end: 'top 25%',
+          scrub: 0.5,
         },
       })
     }, sectionRef)
@@ -52,7 +52,7 @@ export default function News() {
       <div style={{ paddingLeft: '10vw', paddingTop: '80px', paddingBottom: '48px' }}>
         <p style={{
           fontFamily: 'DM Sans, sans-serif',
-          fontSize: '10px',
+          fontSize: '13px',
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
           color: '#C9A84C',

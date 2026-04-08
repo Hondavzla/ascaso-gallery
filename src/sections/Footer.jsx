@@ -1,7 +1,7 @@
 export default function Footer() {
   const labelStyle = {
     fontFamily: 'DM Sans, sans-serif',
-    fontSize: '10px',
+    fontSize: '13px',
     letterSpacing: '0.2em',
     textTransform: 'uppercase',
     color: '#C9A84C',

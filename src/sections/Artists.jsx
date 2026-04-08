@@ -26,6 +26,17 @@ export default function Artists() {
     const scrollDistance = totalWidth - window.innerWidth + 200 // 200px for left padding (10vw ~)
 
     const ctx = gsap.context(() => {
+      gsap.from('[data-animate="artists-header"]', {
+        y: 30,
+        opacity: 0,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+          end: 'top 25%',
+          scrub: 0.5,
+        },
+      })
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -61,10 +72,10 @@ export default function Artists() {
       }}
     >
       {/* Section header */}
-      <div style={{ paddingLeft: '10vw', paddingTop: '100px', paddingBottom: '60px' }}>
+      <div data-animate="artists-header" style={{ paddingLeft: '10vw', paddingTop: '100px', paddingBottom: '60px' }}>
         <p style={{
           fontFamily: 'DM Sans, sans-serif',
-          fontSize: '10px',
+          fontSize: '13px',
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
           color: '#C9A84C',
@@ -100,7 +111,7 @@ export default function Artists() {
             key={artist.name}
             style={{
               flex: `0 0 ${CARD_WIDTH}px`,
-              height: '85vh',
+              height: '65vh',
               borderRadius: '2px',
               overflow: 'hidden',
               position: 'relative',
@@ -117,6 +128,7 @@ export default function Artists() {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
+                objectPosition: 'top center',
                 display: 'block',
               }}
             />
@@ -125,14 +137,14 @@ export default function Artists() {
             <div style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)',
+              background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)',
               pointerEvents: 'none',
             }} />
 
             {/* Artist info */}
             <div style={{
               position: 'absolute',
-              bottom: '32px',
+              bottom: '24px',
               left: '24px',
               right: '24px',
             }}>

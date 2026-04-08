@@ -12,21 +12,21 @@ export default function Exhibition() {
       gsap.from('[data-animate="exhibit-text"]', {
         y: 40,
         opacity: 0,
-        duration: 1.4,
-        ease: 'power3.out',
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 75%',
+          end: 'top 25%',
+          scrub: 0.5,
         },
       })
 
       gsap.from('[data-animate="exhibit-image"]', {
         opacity: 0,
-        duration: 1.8,
-        ease: 'power2.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 65%',
+          start: 'top 75%',
+          end: 'top 25%',
+          scrub: 0.5,
         },
       })
     }, sectionRef)
@@ -55,7 +55,7 @@ export default function Exhibition() {
           <div data-animate="exhibit-text" style={{ flex: '0 0 40%', maxWidth: '40%' }}>
             <p style={{
               fontFamily: 'DM Sans, sans-serif',
-              fontSize: '10px',
+              fontSize: '13px',
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
               color: '#C9A84C',
