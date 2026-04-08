@@ -96,6 +96,7 @@ export default function Hero() {
   const canvasRef = useRef(null)
   const heroRef = useRef(null)
   const [navLight, setNavLight] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   /* Three.js background */
   useEffect(() => {
@@ -126,6 +127,13 @@ export default function Hero() {
     })
 
     return () => trigger.kill()
+  }, [])
+
+  /* Nav background on scroll */
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   /* GSAP entrance animations */
@@ -182,6 +190,17 @@ export default function Hero() {
       <nav
         data-animate="nav"
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 md:px-12"
+        style={{
+          background: scrolled
+            ? navLight
+              ? 'rgba(13,13,13,0.95)'
+              : 'rgba(250,249,246,0.95)'
+            : 'transparent',
+          backdropFilter: scrolled ? 'blur(8px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(8px)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(13,13,13,0.08)' : '1px solid transparent',
+          transition: 'background 0.3s ease, border-bottom 0.3s ease, backdrop-filter 0.3s ease',
+        }}
       >
         <a href="/" className="block">
           <img
