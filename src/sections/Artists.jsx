@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -8,12 +9,104 @@ const artists = [
   { name: 'Javier Martin', medium: 'Painting', image: '/images/artist-javier-martin.jpg' },
   { name: 'Julio Larraz', medium: 'Painting', image: '/images/artist-julio-larraz.png' },
   { name: 'Carlos Cruz-Diez', medium: 'Kinetic Art', image: '/images/artist-carlos-cruz-diez.jpg' },
-  { name: 'Carlos Medina', medium: 'Sculpture', image: '/images/artist-carlos-medina.jpg' },
+  { name: 'Carlos Medina', medium: 'Sculpture', image: '/images/artist-carlos-medina.jpg', slug: 'carlos-medina' },
   { name: 'Alirio Palacios', medium: 'Painting', image: '/images/artist-alirio-palacios.jpg' },
 ]
 
 const CARD_WIDTH = 380
 const CARD_GAP = 32
+
+function ArtistCard({ artist }) {
+  const [hovered, setHovered] = useState(false)
+  const navigate = useNavigate()
+  const mouseDownPos = useRef({ x: 0, y: 0 })
+
+  const handleMouseDown = (e) => {
+    mouseDownPos.current = { x: e.clientX, y: e.clientY }
+  }
+
+  const handleMouseUp = (e) => {
+    if (!artist.slug) return
+    const dx = Math.abs(e.clientX - mouseDownPos.current.x)
+    const dy = Math.abs(e.clientY - mouseDownPos.current.y)
+    if (dx < 5 && dy < 5) {
+      ScrollTrigger.getAll().forEach((t) => t.kill())
+      navigate(`/artists/${artist.slug}`)
+    }
+  }
+
+  return (
+    <div style={{ flex: `0 0 ${CARD_WIDTH}px` }}>
+      <div
+        style={{
+          width: '100%',
+          height: '65vh',
+          borderRadius: '2px',
+          overflow: 'hidden',
+          position: 'relative',
+          cursor: artist.slug ? 'pointer' : 'default',
+          transition: 'transform 600ms ease, border-color 600ms ease',
+          border: artist.slug
+            ? `1px solid ${hovered ? '#C9A84C' : 'transparent'}`
+            : '1px solid transparent',
+          transform: hovered ? 'scale(1.05)' : 'scale(1)',
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+      >
+        <img
+          src={artist.image}
+          alt={artist.name}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'top center',
+            display: 'block',
+            pointerEvents: 'none',
+          }}
+        />
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '24px',
+          left: '24px',
+          right: '24px',
+          pointerEvents: 'none',
+        }}>
+          <p style={{
+            fontFamily: 'DM Sans, sans-serif',
+            fontSize: '11px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: '#C9A84C',
+            marginBottom: '8px',
+          }}>
+            {artist.medium}
+          </p>
+          <h3 style={{
+            fontFamily: 'Cormorant Garamond, serif',
+            fontSize: '36px',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            lineHeight: 1.15,
+            color: '#FFFFFF',
+            margin: 0,
+          }}>
+            {artist.name}
+          </h3>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function Artists() {
   const sectionRef = useRef(null)
@@ -107,70 +200,7 @@ export default function Artists() {
         }}
       >
         {artists.map((artist) => (
-          <div
-            key={artist.name}
-            style={{
-              flex: `0 0 ${CARD_WIDTH}px`,
-              height: '65vh',
-              borderRadius: '2px',
-              overflow: 'hidden',
-              position: 'relative',
-              cursor: 'pointer',
-              transition: 'transform 600ms ease',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
-          >
-            <img
-              src={artist.image}
-              alt={artist.name}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'top center',
-                display: 'block',
-              }}
-            />
-
-            {/* Gradient overlay */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)',
-              pointerEvents: 'none',
-            }} />
-
-            {/* Artist info */}
-            <div style={{
-              position: 'absolute',
-              bottom: '24px',
-              left: '24px',
-              right: '24px',
-            }}>
-              <p style={{
-                fontFamily: 'DM Sans, sans-serif',
-                fontSize: '11px',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: '#C9A84C',
-                marginBottom: '8px',
-              }}>
-                {artist.medium}
-              </p>
-              <h3 style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                fontSize: '36px',
-                fontWeight: 300,
-                fontStyle: 'italic',
-                lineHeight: 1.15,
-                color: '#FFFFFF',
-                margin: 0,
-              }}>
-                {artist.name}
-              </h3>
-            </div>
-          </div>
+          <ArtistCard key={artist.name} artist={artist} />
         ))}
       </div>
 
