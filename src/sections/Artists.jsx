@@ -2,16 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useFeaturedArtists } from '../hooks/data'
 
 gsap.registerPlugin(ScrollTrigger)
-
-const artists = [
-  { name: 'Javier Martin', medium: 'Painting', image: '/images/artist-javier-martin.jpg' },
-  { name: 'Julio Larraz', medium: 'Painting', image: '/images/artist-julio-larraz.png' },
-  { name: 'Carlos Cruz-Diez', medium: 'Kinetic Art', image: '/images/artist-carlos-cruz-diez.jpg' },
-  { name: 'Carlos Medina', medium: 'Sculpture', image: '/images/artist-carlos-medina.jpg', slug: 'carlos-medina' },
-  { name: 'Alirio Palacios', medium: 'Painting', image: '/images/artist-alirio-palacios.jpg' },
-]
 
 const CARD_WIDTH = 380
 const CARD_GAP = 32
@@ -26,7 +19,7 @@ function ArtistCard({ artist }) {
   }
 
   const handleMouseUp = (e) => {
-    if (!artist.slug) return
+    if (!artist.hasDetailPage) return
     const dx = Math.abs(e.clientX - mouseDownPos.current.x)
     const dy = Math.abs(e.clientY - mouseDownPos.current.y)
     if (dx < 5 && dy < 5) {
@@ -44,9 +37,9 @@ function ArtistCard({ artist }) {
           borderRadius: '2px',
           overflow: 'hidden',
           position: 'relative',
-          cursor: artist.slug ? 'pointer' : 'default',
+          cursor: artist.hasDetailPage ? 'pointer' : 'default',
           transition: 'transform 600ms ease, border-color 600ms ease',
-          border: artist.slug
+          border: artist.hasDetailPage
             ? `1px solid ${hovered ? '#C9A84C' : 'transparent'}`
             : '1px solid transparent',
           transform: hovered ? 'scale(1.05)' : 'scale(1)',
@@ -109,11 +102,13 @@ function ArtistCard({ artist }) {
 }
 
 export default function Artists() {
+  const { data: artists } = useFeaturedArtists()
   const sectionRef = useRef(null)
   const trackRef = useRef(null)
   const progressRef = useRef(null)
 
   useEffect(() => {
+    if (!artists.length) return
     const track = trackRef.current
     const totalWidth = artists.length * CARD_WIDTH + (artists.length - 1) * CARD_GAP
     const scrollDistance = totalWidth - window.innerWidth + 200 // 200px for left padding (10vw ~)
@@ -152,7 +147,7 @@ export default function Artists() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [artists.length])
 
   return (
     <section
