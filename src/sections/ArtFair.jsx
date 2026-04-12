@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useLatestArtFair } from '../hooks/data'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function ArtFair() {
+  const { data: fair, isLoading } = useLatestArtFair()
   const sectionRef = useRef(null)
   const imageRef = useRef(null)
   const overlayRef = useRef(null)
@@ -93,6 +95,8 @@ export default function ArtFair() {
     return () => ctx.revert()
   }, [])
 
+  if (isLoading || !fair) return null
+
   return (
     <section ref={sectionRef} style={{
       background: '#FAF9F6',
@@ -120,8 +124,8 @@ export default function ArtFair() {
           cursor: 'pointer',
         }}>
           <img
-            src="/images/art-fair-miami.jpg"
-            alt="Art Miami 2025"
+            src={fair.image}
+            alt={fair.name}
             style={{
               width: '100%',
               height: '100%',
@@ -155,7 +159,7 @@ export default function ArtFair() {
               margin: '0 0 4px 0',
               opacity: 0,
             }}>
-              Booth AM125
+              {`Booth ${fair.booth}`}
             </p>
             <p data-hover-text style={{
               fontFamily: 'Cormorant Garamond, serif',
@@ -166,7 +170,7 @@ export default function ArtFair() {
               margin: 0,
               opacity: 0,
             }}>
-              Art Miami 2025
+              {fair.name}
             </p>
             <p data-hover-text style={{
               fontFamily: 'DM Sans, sans-serif',
@@ -175,7 +179,7 @@ export default function ArtFair() {
               opacity: 0,
               marginTop: '4px',
             }}>
-              December 2 – 7, 2025
+              {fair.dateLabel}
             </p>
           </div>
         </div>
@@ -194,7 +198,7 @@ export default function ArtFair() {
             color: '#C9A84C',
             marginBottom: '24px',
           }}>
-            Last Art Fair
+            {fair.eyebrow}
           </p>
 
           <h2 style={{
@@ -205,7 +209,7 @@ export default function ArtFair() {
             color: '#0D0D0D',
             margin: '0 0 32px 0',
           }}>
-            Art Miami 2025
+            {fair.name}
           </h2>
 
           <div style={{
@@ -221,7 +225,7 @@ export default function ArtFair() {
             color: '#0D0D0D',
             marginBottom: '16px',
           }}>
-            December 2 – December 7, 2025
+            {fair.dateLabel}
           </p>
 
           <p style={{
@@ -232,7 +236,7 @@ export default function ArtFair() {
             opacity: 0.7,
             marginBottom: '48px',
           }}>
-            Ascaso Gallery at Art Miami 2025 – Booth AM125, with works by Pablo Atchugarry, Fernando Botero, Carlos Cruz-Diez, Olga de Amaral, Jiménez Deredia, Julio Larraz.
+            {fair.description}
           </p>
 
           <button style={{
