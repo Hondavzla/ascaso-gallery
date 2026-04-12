@@ -7,7 +7,7 @@ import Artists from './sections/Artists'
 import News from './sections/News'
 import ArtFair from './sections/ArtFair'
 import Footer from './sections/Footer'
-import CarlosMedina from './pages/CarlosMedina'
+import ArtistDetail from './pages/ArtistDetail'
 
 function LandingPage() {
   return (
@@ -29,7 +29,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/artists/carlos-medina" element={<CarlosMedina />} />
+        <Route path="/artists/:slug" element={<ArtistDetail />} />
       </Routes>
     </BrowserRouter>
   )
