@@ -1,0 +1,112 @@
+{
+  "slug": "carlos-medina",
+  "name": "Carlos Medina",
+  "medium": "Sculpture",
+  "heroImage": "/images/artist-carlos-medina.jpg",
+  "eyebrow": "Sculpture",
+  "bio": {
+    "short": "Venezuelan artist (1953). Currently lives and works in Paris. Always focused on geometric abstraction, going from volumetric to spatial concerns, in the last two decades he has focused his interest in exploring spatial proposals that abandon the support as an element of the work. His work is consolidated in the essential and imperceptible interpretation of universe and nature, a leading concept in his work.",
+    "full": [
+      "Venezuelan artist (1953). Currently lives and works in Paris. Always focused on geometric abstraction, going from volumetric to spatial concerns, in the last two decades he has focused his interest in exploring spatial proposals that abandon the support as an element of the work. His work is consolidated in the essential and imperceptible interpretation of universe and nature, a leading concept in his work.",
+      "Studied at the Escuela de Artes Plásticas Cristóbal Rojas, Caracas. Continued studies at the Centro de Enseñanza Gráfica (CEGRA), Caracas. Attended workshops in sculpture and spatial arts in Paris."
+    ]
+  },
+  "quote": {
+    "text": "El espacio es el material con el que trabajo, la escultura es solo su consecuencia.",
+    "attribution": "Carlos Medina",
+    "eyebrow": "El Artista"
+  },
+  "works": [
+    {
+      "slug": "circulo-total",
+      "title": "Círculo Total",
+      "image": "/images/carlos-medina-work-1.jpg"
+    },
+    {
+      "slug": "hoja-cuenca",
+      "title": "Hoja Cuenca",
+      "image": "/images/carlos-medina-work-2.jpg"
+    },
+    {
+      "slug": "fragmentos-de-neutrinos-2016",
+      "title": "Fragmentos de Neutrinos 2016",
+      "image": "/images/carlos-medina-work-3.jpg"
+    }
+  ],
+  "exhibitions": [
+    {
+      "year": 2024,
+      "items": [
+        "Ascaso Gallery, Miami — Solo Exhibition",
+        "Art Miami — Booth AM125"
+      ]
+    },
+    {
+      "year": 2023,
+      "items": [
+        "Galerie Mitterrand, Paris — Group Exhibition",
+        "ARCO Madrid — Ascaso Gallery Booth"
+      ]
+    },
+    {
+      "year": 2022,
+      "items": [
+        "Museo de Arte Contemporáneo de Caracas — Retrospective",
+        "Art Basel Miami Beach — Ascaso Gallery"
+      ]
+    },
+    {
+      "year": 2021,
+      "items": [
+        "Ascaso Gallery, Caracas — \"Spatial Proposals\""
+      ]
+    },
+    {
+      "year": 2019,
+      "items": [
+        "Biennale de Lyon — Selected Artist",
+        "Museo Nacional de Bellas Artes, Caracas"
+      ]
+    },
+    {
+      "year": 2017,
+      "items": [
+        "Galería de Arte Nacional, Caracas — Solo Exhibition",
+        "Pinta Miami — Ascaso Gallery"
+      ]
+    }
+  ],
+  "monumentalWorks": [
+    {
+      "year": 2023,
+      "items": ["Escultura Monumental, Brickell City Centre, Miami"]
+    },
+    {
+      "year": 2020,
+      "items": ["Intervención Espacial, Parque del Este, Caracas"]
+    },
+    {
+      "year": 2016,
+      "items": ["Fragmentos de Neutrinos, Parc de la Villette, Paris"]
+    },
+    {
+      "year": 2012,
+      "items": ["Escultura Pública, Universidad Central de Venezuela, Caracas"]
+    }
+  ],
+  "awards": [
+    "Premio Nacional de Artes Plásticas, Venezuela",
+    "Premio Salón Michelena, Valencia, Venezuela",
+    "Mención Honorífica, Salón Arturo Michelena",
+    "Beca Fundación Gran Mariscal de Ayacucho, Paris"
+  ],
+  "collections": [
+    "Museo de Arte Contemporáneo de Caracas",
+    "Galería de Arte Nacional, Caracas",
+    "Museo de Bellas Artes, Caracas",
+    "Fundación Cisneros, Caracas",
+    "Colección Patricia Phelps de Cisneros, New York",
+    "Museo de Arte Moderno Jesús Soto, Ciudad Bolívar",
+    "Private collections in USA, Europe, and Latin America"
+  ]
+}
