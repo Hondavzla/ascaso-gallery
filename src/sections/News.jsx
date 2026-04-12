@@ -1,34 +1,17 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useLatestNews } from '../hooks/data'
+import { formatNewsDate } from '../utils/formatDate'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const news = [
-  {
-    image: '/images/news-1.jpg',
-    date: 'October 15, 2025',
-    title: 'Muestra colectiva en Miami honra el legado de Julio Larraz',
-    excerpt: 'Collective Exhibition in Miami Honors the Legacy of Julio Larraz. Ascaso Gallery presents Reciprocity, a living tribute.',
-  },
-  {
-    image: '/images/news-2.jpg',
-    date: 'October 1, 2025',
-    title: 'Reciprocity at Ascaso Gallery Bridges Generation Gap',
-    excerpt: 'Artist Julio Larraz Exhibits Alongside Emerging Artists in Miami.',
-  },
-  {
-    image: '/images/news-3.jpg',
-    date: 'October 1, 2025',
-    title: 'Reciprocity: Julio Larraz and the Next Generation of Artistic Freedom',
-    excerpt: 'Julio Larraz and the Next Generation of Artistic Freedom. Source: ArtDaily.',
-  },
-]
-
 export default function News() {
+  const { data: news } = useLatestNews(3)
   const sectionRef = useRef(null)
 
   useEffect(() => {
+    if (!news.length) return
     const ctx = gsap.context(() => {
       gsap.from('[data-animate="news-card"]', {
         y: 50,
@@ -44,7 +27,7 @@ export default function News() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [news.length])
 
   return (
     <section ref={sectionRef} style={{ background: '#FAF9F6' }}>
@@ -81,7 +64,7 @@ export default function News() {
       }}>
         {news.map((item) => (
           <article
-            key={item.title}
+            key={item.slug}
             data-animate="news-card"
             style={{
               borderBottom: '1px solid rgba(13,13,13,0.1)',
@@ -111,7 +94,7 @@ export default function News() {
               color: '#C9A84C',
               marginBottom: '12px',
             }}>
-              {item.date}
+              {formatNewsDate(item.date)}
             </p>
 
             {/* Title */}
