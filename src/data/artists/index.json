@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "javier-martin",
+    "name": "Javier Martin",
+    "medium": "Painting",
+    "image": "/images/artist-javier-martin.jpg",
+    "hasDetailPage": false
+  },
+  {
+    "slug": "julio-larraz",
+    "name": "Julio Larraz",
+    "medium": "Painting",
+    "image": "/images/artist-julio-larraz.png",
+    "hasDetailPage": false
+  },
+  {
+    "slug": "carlos-cruz-diez",
+    "name": "Carlos Cruz-Diez",
+    "medium": "Kinetic Art",
+    "image": "/images/artist-carlos-cruz-diez.jpg",
+    "hasDetailPage": false
+  },
+  {
+    "slug": "carlos-medina",
+    "name": "Carlos Medina",
+    "medium": "Sculpture",
+    "image": "/images/artist-carlos-medina.jpg",
+    "hasDetailPage": true
+  },
+  {
+    "slug": "alirio-palacios",
+    "name": "Alirio Palacios",
+    "medium": "Painting",
+    "image": "/images/artist-alirio-palacios.jpg",
+    "hasDetailPage": false
+  }
+]
