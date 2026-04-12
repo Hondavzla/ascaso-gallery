@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useCurrentExhibition } from '../hooks/data'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Exhibition() {
+  const { data: exhibition, isLoading } = useCurrentExhibition()
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -34,6 +36,8 @@ export default function Exhibition() {
     return () => ctx.revert()
   }, [])
 
+  if (isLoading || !exhibition) return null
+
   return (
     <section ref={sectionRef} id="exhibition" style={{ position: 'relative', zIndex: 1 }}>
       {/* Divider */}
@@ -61,7 +65,7 @@ export default function Exhibition() {
               color: '#C9A84C',
               marginBottom: '24px',
             }}>
-              On View
+              {exhibition.eyebrow}
             </p>
 
             <h2 style={{
@@ -72,7 +76,7 @@ export default function Exhibition() {
               color: '#0D0D0D',
               margin: '0 0 16px 0',
             }}>
-              Forms in Space
+              {exhibition.title}
             </h2>
 
             <p style={{
@@ -83,7 +87,7 @@ export default function Exhibition() {
               opacity: 0.6,
               marginBottom: '40px',
             }}>
-              Contemporary Sculpture &amp; Painting
+              {exhibition.subtitle}
             </p>
 
             <div style={{
@@ -101,7 +105,7 @@ export default function Exhibition() {
               opacity: 0.5,
               marginBottom: '48px',
             }}>
-              December 4 – February 9
+              {exhibition.dateLabel}
             </p>
 
             <button style={{
@@ -128,8 +132,8 @@ export default function Exhibition() {
             overflow: 'hidden',
           }}>
             <img
-              src="/images/exhibition-forms-in-space.jpeg"
-              alt="Forms in Space — Contemporary Sculpture & Painting"
+              src={exhibition.image}
+              alt={`${exhibition.title} — ${exhibition.subtitle}`}
               style={{
                 width: '100%',
                 height: '100%',
