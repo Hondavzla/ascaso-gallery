@@ -1,0 +1,15 @@
+{
+  "featuredArtistSlugs": [
+    "javier-martin",
+    "julio-larraz",
+    "carlos-cruz-diez",
+    "carlos-medina",
+    "alirio-palacios"
+  ],
+  "relatedArtistsFallbackSlugs": [
+    "javier-martin",
+    "julio-larraz",
+    "carlos-cruz-diez",
+    "alirio-palacios"
+  ]
+}
