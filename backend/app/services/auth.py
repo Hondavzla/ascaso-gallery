@@ -23,7 +23,7 @@ def admin_required(fn):
     @jwt_required()
     def wrapper(*args, **kwargs):
         user_id = get_jwt_identity()
-        user = AdminUser.query.get(user_id)
+        user = AdminUser.query.get(int(user_id))
         if not user:
             abort(401)
         g.current_admin = user

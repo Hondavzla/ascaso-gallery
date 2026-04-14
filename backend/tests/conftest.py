@@ -8,6 +8,7 @@ from app.models import AdminUser  # noqa: F401
 @pytest.fixture
 def app():
     app = create_app('test')
+    app.config['RATELIMIT_ENABLED'] = False
     with app.app_context():
         _db.create_all()
         yield app

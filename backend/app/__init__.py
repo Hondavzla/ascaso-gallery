@@ -1,5 +1,6 @@
 from flask import Flask
 
+from app.blueprints import register_blueprints
 from app.config import CONFIG_MAP
 from app.errors import register_error_handlers
 from app.extensions import db, migrate, jwt, cors, limiter
@@ -21,6 +22,7 @@ def create_app(config_name: str = 'prod') -> Flask:
     limiter.init_app(app)
 
     register_error_handlers(app)
+    register_blueprints(app)
 
     @app.get('/api/health')
     def health():
