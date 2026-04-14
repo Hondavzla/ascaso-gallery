@@ -12,6 +12,8 @@ class NewsArticle(db.Model):
     excerpt = db.Column(db.String(500), nullable=True)
     content = db.Column(db.Text, nullable=True)
     hero_image_url = db.Column(db.String(500), nullable=True)
+    external_url = db.Column(db.String(500), nullable=True)
+    source = db.Column(db.String(200), nullable=True)
     published_at = db.Column(db.DateTime, nullable=True, index=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
