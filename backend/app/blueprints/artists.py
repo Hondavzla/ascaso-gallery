@@ -63,3 +63,54 @@ def delete_artist(slug):
     db.session.delete(artist)
     db.session.commit()
     return '', 204
+
+
+from app.models.artist import ArtWork
+from app.schemas.artist import ArtWorkSchema
+
+artwork_schema = ArtWorkSchema()
+artwork_partial_schema = ArtWorkSchema(partial=True)
+
+
+def _get_artist_or_404(slug: str) -> Artist:
+    artist = Artist.query.filter_by(slug=slug).first()
+    if not artist:
+        abort(404)
+    return artist
+
+
+@bp.post('/<slug>/artworks')
+@admin_required
+def create_artwork(slug):
+    artist = _get_artist_or_404(slug)
+    data = artwork_schema.load(request.get_json() or {})
+    work = ArtWork(artist_id=artist.id, **data)
+    db.session.add(work)
+    db.session.commit()
+    return jsonify(artwork_schema.dump(work)), 201
+
+
+@bp.put('/<slug>/artworks/<work_slug>')
+@admin_required
+def update_artwork(slug, work_slug):
+    artist = _get_artist_or_404(slug)
+    work = ArtWork.query.filter_by(artist_id=artist.id, slug=work_slug).first()
+    if not work:
+        abort(404)
+    data = artwork_partial_schema.load(request.get_json() or {})
+    for key, value in data.items():
+        setattr(work, key, value)
+    db.session.commit()
+    return jsonify(artwork_schema.dump(work))
+
+
+@bp.delete('/<slug>/artworks/<work_slug>')
+@admin_required
+def delete_artwork(slug, work_slug):
+    artist = _get_artist_or_404(slug)
+    work = ArtWork.query.filter_by(artist_id=artist.id, slug=work_slug).first()
+    if not work:
+        abort(404)
+    db.session.delete(work)
+    db.session.commit()
+    return '', 204
