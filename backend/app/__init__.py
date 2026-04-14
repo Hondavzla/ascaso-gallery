@@ -1,6 +1,7 @@
 from flask import Flask
 
 from app.config import CONFIG_MAP
+from app.errors import register_error_handlers
 from app.extensions import db, migrate, jwt, cors, limiter
 
 
@@ -17,6 +18,8 @@ def create_app(config_name: str = 'prod') -> Flask:
         supports_credentials=True,
     )
     limiter.init_app(app)
+
+    register_error_handlers(app)
 
     @app.get('/api/health')
     def health():
