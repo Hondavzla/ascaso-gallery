@@ -52,4 +52,7 @@ def create_app(config_name: str = 'prod') -> Flask:
     def health():
         return {'status': 'ok'}
 
+    from scripts.cli import register_cli
+    register_cli(app)
+
     return app
