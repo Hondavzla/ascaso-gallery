@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+.env
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# SQLite dev DB
+*.db
+*.db-journal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
