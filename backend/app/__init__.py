@@ -45,6 +45,10 @@ def create_app(config_name: str = 'prod') -> Flask:
     )
     limiter.init_app(app)
 
+    import cloudinary
+    if app.config.get('CLOUDINARY_URL'):
+        cloudinary.config(cloudinary_url=app.config['CLOUDINARY_URL'])
+
     register_error_handlers(app)
     register_blueprints(app)
 
