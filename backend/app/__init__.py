@@ -10,6 +10,7 @@ def create_app(config_name: str = 'prod') -> Flask:
     app.config.from_object(CONFIG_MAP[config_name])
 
     db.init_app(app)
+    from app import models as _models  # noqa: F401  -- register models with SQLAlchemy metadata
     migrate.init_app(app, db)
     jwt.init_app(app)
     cors.init_app(
