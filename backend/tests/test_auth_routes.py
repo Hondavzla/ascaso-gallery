@@ -52,3 +52,11 @@ def test_me_with_valid_token(client, admin):
     resp = client.get('/api/auth/me', headers={'Authorization': f'Bearer {token}'})
     assert resp.status_code == 200
     assert resp.get_json()['email'] == 'admin@x.com'
+
+
+def test_me_401_uses_error_envelope(client):
+    resp = client.get('/api/auth/me')
+    assert resp.status_code == 401
+    body = resp.get_json()
+    assert 'error' in body
+    assert body['error']['code'] == 'unauthorized'

@@ -14,6 +14,30 @@ def create_app(config_name: str = 'prod') -> Flask:
     from app import models as _models  # noqa: F401  -- register models with SQLAlchemy metadata
     migrate.init_app(app, db)
     jwt.init_app(app)
+
+    from flask import jsonify, g
+
+    def _unauth(reason: str):
+        return jsonify({
+            'error': {
+                'code': 'unauthorized',
+                'message': 'Authentication required',
+                'request_id': getattr(g, 'request_id', None),
+            }
+        }), 401
+
+    @jwt.unauthorized_loader
+    def _jwt_unauthorized(reason):
+        return _unauth(reason)
+
+    @jwt.invalid_token_loader
+    def _jwt_invalid(reason):
+        return _unauth(reason)
+
+    @jwt.expired_token_loader
+    def _jwt_expired(header, payload):
+        return _unauth('expired')
+
     cors.init_app(
         app,
         resources={r'/api/*': {'origins': app.config['CORS_ORIGINS'] or '*'}},
