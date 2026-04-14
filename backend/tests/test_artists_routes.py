@@ -52,3 +52,72 @@ def test_get_artist_detail_404(client):
     resp = client.get('/api/artists/nope')
     assert resp.status_code == 404
     assert resp.get_json()['error']['code'] == 'not_found'
+
+
+from app.models import AdminUser
+from app.services.auth import hash_password
+
+
+@pytest.fixture
+def admin_token(app, db):
+    u = AdminUser(email='admin@x.com', password_hash=hash_password('pw'))
+    db.session.add(u); db.session.commit()
+    with app.test_client() as c:
+        resp = c.post('/api/auth/login', json={'email': 'admin@x.com', 'password': 'pw'})
+        return resp.get_json()['access_token']
+
+
+@pytest.fixture
+def auth_headers(admin_token):
+    return {'Authorization': f'Bearer {admin_token}'}
+
+
+def test_post_artist_requires_auth(client):
+    resp = client.post('/api/artists', json={'slug': 'x', 'name': 'X'})
+    assert resp.status_code == 401
+
+
+def test_post_artist_happy_path(client, auth_headers):
+    payload = {'slug': 'new-artist', 'name': 'New Artist', 'medium': 'Painting'}
+    resp = client.post('/api/artists', json=payload, headers=auth_headers)
+    assert resp.status_code == 201
+    body = resp.get_json()
+    assert body['slug'] == 'new-artist'
+    assert body['id'] is not None
+
+
+def test_post_artist_validation_error(client, auth_headers):
+    resp = client.post('/api/artists', json={'slug': 'x'}, headers=auth_headers)
+    assert resp.status_code == 422
+    assert 'name' in resp.get_json()['error']['details']
+
+
+def test_post_artist_duplicate_slug_409(client, auth_headers, seeded):
+    resp = client.post('/api/artists', json={'slug': 'carlos-medina', 'name': 'Dupe'}, headers=auth_headers)
+    assert resp.status_code == 409
+
+
+def test_put_artist_partial_update(client, auth_headers, seeded):
+    resp = client.put('/api/artists/carlos-medina', json={'medium': 'Painting'}, headers=auth_headers)
+    assert resp.status_code == 200
+    assert resp.get_json()['medium'] == 'Painting'
+    # other fields unchanged
+    assert resp.get_json()['name'] == 'Carlos Medina'
+
+
+def test_put_artist_404(client, auth_headers):
+    resp = client.put('/api/artists/nope', json={'name': 'X'}, headers=auth_headers)
+    assert resp.status_code == 404
+
+
+def test_delete_artist_cascades(client, auth_headers, seeded, db):
+    from app.models.artist import Artist, ArtWork
+    resp = client.delete('/api/artists/carlos-medina', headers=auth_headers)
+    assert resp.status_code == 204
+    assert Artist.query.filter_by(slug='carlos-medina').first() is None
+    assert ArtWork.query.filter_by(slug='w1').first() is None
+
+
+def test_delete_artist_404(client, auth_headers):
+    resp = client.delete('/api/artists/nope', headers=auth_headers)
+    assert resp.status_code == 404
